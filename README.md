@@ -1,2 +1,2 @@
 # pipeline_SGCN
-SGCN processing for the BCB pipeline
+SGCN processing for the bis data pipeline.
