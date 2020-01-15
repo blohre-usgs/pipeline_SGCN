@@ -1,0 +1,4 @@
+-e git+https://github.com/usgs-bcb/bis.git@master#egg=bis
+requests==2.22.0
+ftfy==5.6
+xmltodict==0.12.0
