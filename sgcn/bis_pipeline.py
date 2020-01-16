@@ -7,6 +7,7 @@ from sgcn.sgcn import (addSpeciesToList, processITIS, processWoRMS,
     setupTESSProcessing, processTESS, sgcnDecisions, processNatureServe, synthesize)
 
 include_legacy = False
+json_schema = None
 
 def process_1(
     path,
