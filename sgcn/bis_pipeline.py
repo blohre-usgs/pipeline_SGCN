@@ -76,6 +76,7 @@ def process_1(
     # ch_ledger = change_ledger.ChangeLedger(run_id, "USNVC", "usnvc_1.py", sb_item_id, sb_file_name)
     # print('Number of species: ' + str(len(uniqueNames)))
 
+    count = 0
     for index, spec in enumerate(species):
         if (index < 5
             or spec["ScientificName_original"] == "Calypte costae"
@@ -90,6 +91,9 @@ def process_1(
                 "itisManualOverrides": itisManualOverrides,
                 "nsCodes": nsCodes
             }, 2)
+            count += 1
+
+    return count
 
 def process_2(
     path,
@@ -106,6 +110,8 @@ def process_2(
     species = sgcnDecisions(species, previous_stage_result)
     species = processNatureServe(species)
     finalSpecies = synthesize(species, previous_stage_result["nsCodes"])
+
+    send_final_result(finalSpecies)
 
     # with open('test/species.json', 'a') as speciesFile:
     #     species["_id"] = species["ScientificName_original"]
