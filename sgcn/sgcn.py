@@ -191,7 +191,6 @@ def processNatureServe(species):
 def synthesize(species, nsCodes):
     synthRecord = species
     synthRecord = {
-        "_id": species["Scientific Name"],
         "Scientific Name": species["Scientific Name"],
         "Common Name": species["Common Name"],
         "Taxonomic Group": species["Taxonomic Group"],

@@ -17,19 +17,6 @@ def process_1(
     previous_stage_result,
 ):
     sb_item_id = previous_stage_result
-    sbSWAPItem = requests.get("https://www.sciencebase.gov/catalog/item/" + sb_item_id + "?format=json&fields=files").json()
-    for file in sbSWAPItem["files"]:
-        if file["title"] == "Historic 2005 SWAP National List":
-            _historicSWAPFilePath = file["url"]
-            swap2005List = []
-            for line in requests.get(file["url"], stream=True).iter_lines():
-                if line: swap2005List.append(line.decode("utf-8"))
-        elif file["title"] == "Taxonomic Group Mappings":
-            sgcnTaxonomicGroupMappings = json.loads(requests.get(file["url"]).text)
-        elif file["title"] == "SGCN ITIS Overrides":
-            itisManualOverrides = json.loads(requests.get(file["url"]).text)
-        elif file["title"] == "NatureServe National Conservation Status Descriptions":
-            nsCodes = json.loads(requests.get(file["url"]).text)
 
     sbR = requests.get(path).json()
     items = sbR["items"]
@@ -57,25 +44,6 @@ def process_1(
                     continue
         sgcnSourceData.append(sourceItemWithData)
         species = addSpeciesToList(species, sourceItemWithData)
-        # for species in sourceItemWithData["sourceData"]:
-        #     name = species["scientific name"]
-        #     if len(name) > 0 and name not in uniqueNames:
-        #         uniqueNames.append(name)
-
-    # with open('test.txt', 'w') as testFile:
-    #     for sourceData in sgcnSourceData:
-    #         testFile.write(str(sourceData))
-    #         testFile.write('\n')
-    # with open('species.txt', 'w') as speciesFile:
-    #     for sp in species:
-    #         if sp["ScientificName_original"] == "Thamnophis radix":
-    #             speciesFile.write(str(sp))
-    # s = sb_io.SbIo(sb_item_id, sb_file_name, run_id)
-    # path = s.download_and_extract_file()
-        # if index == 0:
-        #     print(sourceItemWithData)
-    # ch_ledger = change_ledger.ChangeLedger(run_id, "USNVC", "usnvc_1.py", sb_item_id, sb_file_name)
-    # print('Number of species: ' + str(len(uniqueNames)))
 
     count = 0
     for index, spec in enumerate(species):
@@ -84,14 +52,7 @@ def process_1(
             or spec["ScientificName_original"] == "Bouteloua gracilis"
             or spec["ScientificName_original"] == "Calidris  subruficollis"
             or spec["ScientificName_original"] == "Vertigo hubrichti"):
-            send_to_stage({
-                "species": spec,
-                "historicSWAPFilePath": _historicSWAPFilePath,
-                "swap2005List": swap2005List,
-                "sgcnTaxonomicGroupMappings": sgcnTaxonomicGroupMappings,
-                "itisManualOverrides": itisManualOverrides,
-                "nsCodes": nsCodes
-            }, 2)
+            send_to_stage(spec, 2)
             count += 1
 
     return count
@@ -112,10 +73,4 @@ def process_2(
     species = processNatureServe(species)
     finalSpecies = synthesize(species, previous_stage_result["nsCodes"])
 
-    send_final_result(finalSpecies)
-
-    # with open('test/species.json', 'a') as speciesFile:
-    #     species["_id"] = species["ScientificName_original"]
-    #     speciesFile.write(json.dumps(species) + '\n')
-    # with open('test/final_species.json', 'a') as finalSpeciesFile:
-    #     finalSpeciesFile.write(json.dumps(finalSpecies) + "\n")
+    send_final_result({ "data": finalSpecies, "row_id": finalSpecies["Scientific Name"]})
