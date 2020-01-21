@@ -51,9 +51,9 @@ def process_1(
             or spec["ScientificName_original"] == "Calypte costae"
             or spec["ScientificName_original"] == "Bouteloua gracilis"
             or spec["ScientificName_original"] == "Calidris  subruficollis"
-            or spec["ScientificName_original"] == "Vertigo hubrichti")
-            or spec["ScientificName_original"]) == "Ambystoma laterale"
-            or spec["ScientificName_original"]) == "Ambystoma laterale ":
+            or spec["ScientificName_original"] == "Vertigo hubrichti"
+            or spec["ScientificName_original"] == "Ambystoma laterale"
+            or spec["ScientificName_original"] == "Ambystoma laterale "):
             send_to_stage(spec, 2)
             count += 1
 
