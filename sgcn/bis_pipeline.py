@@ -47,7 +47,7 @@ def process_1(
 
     count = 0
     for index, spec in enumerate(species):
-        if (index < 5
+        if (index < 100
             or spec["ScientificName_original"] == "Calypte costae"
             or spec["ScientificName_original"] == "Bouteloua gracilis"
             or spec["ScientificName_original"] == "Calidris  subruficollis"
