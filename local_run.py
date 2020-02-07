@@ -95,3 +95,10 @@ lambda_handler({
     "sb_item_id": "56d720ece4b015c306f442d5",
     "download_uri": "https://www.sciencebase.gov/catalog/items?parentId=56d720ece4b015c306f442d5&format=json&fields=files,tags,dates&max=1000"
 }, {})
+
+# lambda_handler_2({"body": json.dumps({
+#     "run_id": "1",
+#     "sb_item_id": "56d720ece4b015c306f442d5",
+#     "download_uri": "https://www.sciencebase.gov/catalog/items?parentId=56d720ece4b015c306f442d5&format=json&fields=files,tags,dates&max=1000",
+#     "payload": {}
+# })}, {})
