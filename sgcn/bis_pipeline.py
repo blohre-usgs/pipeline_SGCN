@@ -1,6 +1,7 @@
 import sys
 import json
 import requests
+import copy
 
 from bis import sgcn
 from sgcn.sgcn import (addSpeciesToList, processITIS, processWoRMS,
@@ -67,6 +68,7 @@ def process_2(
     previous_stage_result,
 ):
     species = previous_stage_result["species"]
+    original_species = copy.deepcopy(species)
     species = processITIS(species)
     species = processWoRMS(species)
     species = setupTESSProcessing(species)
@@ -74,5 +76,14 @@ def process_2(
     species = sgcnDecisions(species, previous_stage_result)
     species = processNatureServe(species)
     finalSpecies = synthesize(species, previous_stage_result["nsCodes"])
+    ch_ledger.log_change_event(
+        finalSpecies["Scientific Name"],
+        'bis_pipeline.py',
+        'process_2',
+        'Synthesize Species Information',
+        'Aggregate all of the data gathered for a particular spiecies into one document',
+        original_species,
+        finalSpecies
+    )
 
     send_final_result({ "data": finalSpecies, "row_id": finalSpecies["Scientific Name"]})
