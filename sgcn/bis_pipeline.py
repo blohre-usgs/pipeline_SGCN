@@ -68,22 +68,31 @@ def process_2(
     previous_stage_result,
 ):
     species = previous_stage_result["species"]
+    print('processing ' + species["ScientificName_clean"])
     original_species = copy.deepcopy(species)
     species = processITIS(species)
+    itis_species = copy.deepcopy(species)
     species = processWoRMS(species)
+    worms_species = copy.deepcopy(species)
     species = setupTESSProcessing(species)
+    setup_tess = copy.deepcopy(species)
     species = processTESS(species)
+    process_tess = copy.deepcopy(species)
     species = sgcnDecisions(species, previous_stage_result)
+    sgcn_decisions = copy.deepcopy(species)
     species = processNatureServe(species)
+    process_nature_serve = copy.deepcopy(species)
     finalSpecies = synthesize(species, previous_stage_result["nsCodes"])
-    ch_ledger.log_change_event(
-        finalSpecies["Scientific Name"],
-        'bis_pipeline.py',
-        'process_2',
-        'Synthesize Species Information',
-        'Aggregate all of the data gathered for a particular spiecies into one document',
-        original_species,
-        finalSpecies
+
+    row_id = finalSpecies["Scientific Name"]
+    ch_ledger.log_change_event(row_id, 'sgcn.py', 'processITIS', 'Process ITIS', 'Process ITIS', original_species, itis_species)
+    ch_ledger.log_change_event(row_id, 'sgcn.py', 'processWoRMS', 'Process WoRMS', 'Process WoRMS', itis_species, worms_species)
+    ch_ledger.log_change_event(row_id, 'sgcn.py', 'setupTESSProcessing', 'Setup TESS Processing', 'Setup TESS Processing', worms_species, setup_tess)
+    ch_ledger.log_change_event(row_id, 'sgcn.py', 'processTESS', 'Process TESS', 'Process TESS', setup_tess, process_tess)
+    ch_ledger.log_change_event(row_id, 'sgcn.py', 'sgcnDecisions', 'SGCN Decisions', 'SGCN Decisions', process_tess, sgcn_decisions)
+    ch_ledger.log_change_event(row_id, 'sgcn.py', 'processNatureServe', 'Process NatureServe', 'Process NatureServe', sgcn_decisions, process_nature_serve)
+    ch_ledger.log_change_event(row_id, 'bis_pipeline.py', 'synthesize', 'Synthesize Species Information',
+        'Aggregate all of the data gathered for a particular species into one document', process_nature_serve, finalSpecies
     )
 
-    send_final_result({ "data": finalSpecies, "row_id": finalSpecies["Scientific Name"]})
+    send_final_result({ "data": finalSpecies, "row_id": row_id})
