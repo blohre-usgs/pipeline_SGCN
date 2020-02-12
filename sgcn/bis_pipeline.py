@@ -43,7 +43,7 @@ def process_1(
                     sgcnSourceData.remove(dup)
                 else:
                     continue
-        print('Processing ' + len(sourceItemWithData["sourceData"]) + ' species for ' + sourceItemWithData["processingMetadata"]["sgcn_year"] + ' ' + sourceItem["processingMetadata"]["sgcn_state"])
+        print('Processing ' + str(len(sourceItemWithData["sourceData"])) + ' species for ' + sourceItemWithData["processingMetadata"]["sgcn_year"] + ' ' + sourceItem["processingMetadata"]["sgcn_state"])
         sgcnSourceData.append(sourceItemWithData)
         species = addSpeciesToList(species, sourceItemWithData)
 
