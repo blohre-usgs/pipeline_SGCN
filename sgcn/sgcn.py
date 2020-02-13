@@ -120,7 +120,7 @@ def sgcnDecisions(species, previous_stage_result):
         itisResult["itisData"] = [itis.packageITISJSON(r_tsnSearch["response"]["docs"][0])]
         species["itis"] = itisResult
 
-    if not species["itis"] or not species["worms"]:
+    if "itis" not in species or not "worms" not in species:
         return species
     sgcnDoc = {}
     if "itisData" in species["itis"].keys():
