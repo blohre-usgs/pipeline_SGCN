@@ -26,8 +26,8 @@ def process_1(
     species = []
     for item in items:
         sourceItem = sgcn.sgcn_source_item_metadata(item)
-        # if sourceItem["processingMetadata"]["sgcn_state"] not in ["Indiana", "Iowa", "Wyoming", "Missouri", "Wisconsin", "New Mexico", "Ohio"]:
-        #     continue
+        if sourceItem["processingMetadata"]["sgcn_state"] not in ["Indiana", "Iowa", "Wyoming", "Missouri", "Wisconsin", "New Mexico", "Ohio"]:
+            continue
 
         if sourceItem is None:
             continue
@@ -49,15 +49,15 @@ def process_1(
 
     count = 0
     for index, spec in enumerate(species):
-        if (index < 200
-            or spec["ScientificName_original"] == "Calypte costae"
-            or spec["ScientificName_original"] == "Bouteloua gracilis"
-            or spec["ScientificName_original"] == "Calidris  subruficollis"
-            or spec["ScientificName_original"] == "Vertigo hubrichti"
-            or spec["ScientificName_original"] == "Ambystoma laterale"
-            or spec["ScientificName_original"] == "Ambystoma laterale "):
-            send_to_stage(spec, 2)
-            count += 1
+        # if (index < 200
+        #     or spec["ScientificName_original"] == "Calypte costae"
+        #     or spec["ScientificName_original"] == "Bouteloua gracilis"
+        #     or spec["ScientificName_original"] == "Calidris  subruficollis"
+        #     or spec["ScientificName_original"] == "Vertigo hubrichti"
+        #     or spec["ScientificName_original"] == "Ambystoma laterale"
+        #     or spec["ScientificName_original"] == "Ambystoma laterale "):
+        send_to_stage(spec, 2)
+        count += 1
 
     return count
 
@@ -70,6 +70,9 @@ def process_2(
 ):
     species = previous_stage_result["species"]
     print('processing ' + species["ScientificName_clean"])
+    if not species["ScientificName_clean"]:
+        print('Insufficient data, ending processing here, species info: ' + str(species))
+        return
     original_species = copy.deepcopy(species)
     species = processITIS(species)
     itis_species = copy.deepcopy(species)

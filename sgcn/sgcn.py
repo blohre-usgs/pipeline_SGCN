@@ -42,8 +42,8 @@ def processITIS(species):
     return species
 
 def processWoRMS(species):
-    if not species["ScientificName_clean"]:
-        return species
+    # if not species["ScientificName_clean"]:
+    #     return species
     wormsResult = worms.lookupWoRMS(species["ScientificName_clean"])
     species["worms"] = wormsResult
     return species
@@ -120,7 +120,7 @@ def sgcnDecisions(species, previous_stage_result):
         itisResult["itisData"] = [itis.packageITISJSON(r_tsnSearch["response"]["docs"][0])]
         species["itis"] = itisResult
 
-    if "itis" not in species or not "worms" not in species:
+    if not species["itis"] or not species["worms"]:
         return species
     sgcnDoc = {}
     if "itisData" in species["itis"].keys():
