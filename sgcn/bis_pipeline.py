@@ -26,8 +26,8 @@ def process_1(
     species = []
     for item in items:
         sourceItem = sgcn.sgcn_source_item_metadata(item)
-        if sourceItem["processingMetadata"]["sgcn_state"] not in ["Indiana", "Iowa", "Wyoming", "Missouri", "Wisconsin", "New Mexico", "Ohio"]:
-            continue
+        # if sourceItem["processingMetadata"]["sgcn_state"] not in ["Indiana", "Iowa", "Wyoming", "Missouri", "Wisconsin", "New Mexico", "Ohio"]:
+        #     continue
 
         if sourceItem is None:
             continue
